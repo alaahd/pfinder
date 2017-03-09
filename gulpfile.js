@@ -3,10 +3,15 @@ var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var babel = require('gulp-babel');
 var livereload = require('gulp-livereload');
+var autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('styles', function() {
     gulp.src('src/sass/**/*.scss')
         .pipe(sass().on('error', sass.logError))
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+            cascade: false
+        }))
         .pipe(gulp.dest('./css/'));
 });
 
