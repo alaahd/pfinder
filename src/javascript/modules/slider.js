@@ -19,15 +19,6 @@ Slider.prototype = {
 
     animate: function( slide ) {
         var parent = slide.parentNode;
-        var caption = slide.querySelector( ".caption" );
-        var captions = parent.querySelectorAll( ".caption" );
-        for( var k = 0; k < captions.length; ++k ) {
-            var cap = captions[k];
-            if( cap !== caption ) {
-                cap.classList.remove( "visible" );
-            }
-        }
-        caption.classList.add( "visible" );
     },
 
     slide: function( element ) {

@@ -8,16 +8,15 @@ var autoprefixer = require('gulp-autoprefixer');
 gulp.task('styles', function() {
     gulp.src('src/sass/**/*.scss')
         .pipe(sass().on('error', sass.logError))
-        .pipe(autoprefixer({
-            browsers: ['last 2 versions'],
-            cascade: false
-        }))
         .pipe(gulp.dest('./css/'));
 });
 
 gulp.task('scripts', function() {
     return gulp.src(['src/javascript/modules/**/*.js', 'src/javascript/main.js'])
         .pipe(concat('app.js'))
+        .pipe(babel({
+            presets: ['es2015']
+        }))
         .pipe(gulp.dest('./js/'));
 });
 

@@ -5,17 +5,32 @@ document.addEventListener( "DOMContentLoaded", function() {
         function(response) {
 
             var data = response.data;
+            var html = "";
+            var nav = "";
 
-            data.map(function (item, indx) {
+            data.map(function (item, index) {
 
-                var tmplSlide = _.template("<li class='slide'><img src='http://placehold.it/960x540' /><div class='info'><img src='<%= item.links.logo %>' /><h1><%= item.name %></h1><p><%= item.description %></p></div></li>");
-                var slide = tmplSlide({item: item});
-                $('#slider-wrapper').append(slide);
+                const slideMarkup = `
+                    <li class="slide">
+                        <img src="http://placehold.it/960x540"></img>
+                        <div class='info'>
+                            <img src="${item.links.logo}"></img>
+                            <h1>${item.name}</h1>
+                            <p>${item.description}</p>
+                        </div>
+                    </li>
+                `;
 
-                var tmplNav = _.template("<a href='#' data-slide='<%= indx %>'><%= indx+1 %></a>");
-                var nav = tmplNav({indx: indx});
-                $('#slider-nav').append(nav);
+                const navMarkup = `
+                    <a href="#" data-slide="${index}">${index+1}</a>
+                `;
+
+                html += slideMarkup;
+                nav += navMarkup;
             });
+
+            document.getElementById('slider-wrapper').innerHTML = html;
+            document.getElementById('slider-nav').innerHTML = nav;
 
             //initialize the slider
             var aSlider = new Slider("#slider");
