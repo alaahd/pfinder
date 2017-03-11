@@ -4,48 +4,34 @@ function Slider( element ) {
 }
 
 Slider.prototype = {
-    init: function() {
-        this.links = this.el.querySelectorAll( "#slider-nav a" );
+    init: function () {
+        this.slides = this.el.querySelectorAll( "#slider-wrapper .slide" );
         this.wrapper = this.el.querySelector( "#slider-wrapper" );
-        this.navigate();
+        this.currentSlideIndex = 1;
+        //this.navigate();
     },
-    navigate: function() {
-
-        for( var i = 0; i < this.links.length; ++i ) {
-            var link = this.links[i];
-            this.slide( link );
+    next: function (event) {
+        event.preventDefault();
+        this.slide(this.currentSlideIndex + 1);
+        this.currentSlideIndex = (this.currentSlideIndex + 1) % this.slides.length;
+    },
+    prev: function (event) {
+        event.preventDefault();
+        if (this.currentSlideIndex == 1) {
+            this.slide(this.slides.length);
+            this.currentSlideIndex = this.slides.length;
+        } else {
+            this.slide(this.currentSlideIndex - 1);
+            this.currentSlideIndex --;
         }
     },
-
     animate: function( slide ) {
         var parent = slide.parentNode;
     },
 
-    slide: function( element ) {
-        var self = this;
-        element.addEventListener( "click", function( e ) {
-            e.preventDefault();
-            var a = this;
-            self.setCurrentLink( a );
-            var index = parseInt( a.getAttribute( "data-slide" ), 10 ) + 1;
-            var currentSlide = self.el.querySelector( ".slide:nth-child(" + index + ")" );
-
-            self.wrapper.style.left = "-" + currentSlide.offsetLeft + "px";
-            self.animate( currentSlide );
-
-        }, false);
-    },
-    setCurrentLink: function( link ) {
-        var parent = link.parentNode;
-        var a = parent.querySelectorAll( "a" );
-
-        link.className = "current";
-
-        for( var j = 0; j < a.length; ++j ) {
-            var cur = a[j];
-            if( cur !== link ) {
-                cur.className = "";
-            }
-        }
+    slide: function( index ) {
+        var currentSlide = this.el.querySelector( ".slide:nth-child(" + index + ")" );
+        this.wrapper.style.left = "-" + currentSlide.offsetLeft + "px";
+        this.animate( currentSlide );
     }
 };

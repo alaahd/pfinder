@@ -21,47 +21,34 @@ function Slider(element) {
 
 Slider.prototype = {
     init: function init() {
-        this.links = this.el.querySelectorAll("#slider-nav a");
+        this.slides = this.el.querySelectorAll("#slider-wrapper .slide");
         this.wrapper = this.el.querySelector("#slider-wrapper");
-        this.navigate();
+        this.currentSlideIndex = 1;
+        //this.navigate();
     },
-    navigate: function navigate() {
-
-        for (var i = 0; i < this.links.length; ++i) {
-            var link = this.links[i];
-            this.slide(link);
+    next: function next(event) {
+        event.preventDefault();
+        this.slide(this.currentSlideIndex + 1);
+        this.currentSlideIndex = (this.currentSlideIndex + 1) % this.slides.length;
+    },
+    prev: function prev(event) {
+        event.preventDefault();
+        if (this.currentSlideIndex == 1) {
+            this.slide(this.slides.length);
+            this.currentSlideIndex = this.slides.length;
+        } else {
+            this.slide(this.currentSlideIndex - 1);
+            this.currentSlideIndex--;
         }
     },
-
     animate: function animate(slide) {
         var parent = slide.parentNode;
     },
 
-    slide: function slide(element) {
-        var self = this;
-        element.addEventListener("click", function (e) {
-            e.preventDefault();
-            var a = this;
-            self.setCurrentLink(a);
-            var index = parseInt(a.getAttribute("data-slide"), 10) + 1;
-            var currentSlide = self.el.querySelector(".slide:nth-child(" + index + ")");
-
-            self.wrapper.style.left = "-" + currentSlide.offsetLeft + "px";
-            self.animate(currentSlide);
-        }, false);
-    },
-    setCurrentLink: function setCurrentLink(link) {
-        var parent = link.parentNode;
-        var a = parent.querySelectorAll("a");
-
-        link.className = "current";
-
-        for (var j = 0; j < a.length; ++j) {
-            var cur = a[j];
-            if (cur !== link) {
-                cur.className = "";
-            }
-        }
+    slide: function slide(index) {
+        var currentSlide = this.el.querySelector(".slide:nth-child(" + index + ")");
+        this.wrapper.style.left = "-" + currentSlide.offsetLeft + "px";
+        this.animate(currentSlide);
     }
 };
 
@@ -72,23 +59,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         var data = response.data;
         var html = "";
-        var nav = "";
 
         data.map(function (item, index) {
 
-            var slideMarkup = "\n                    <li class=\"slide\">\n                        <img src=\"http://placehold.it/960x540\"></img>\n                        <div class='info'>\n                            <img src=\"" + item.links.logo + "\"></img>\n                            <h1>" + item.name + "</h1>\n                            <p>" + item.description + "</p>\n                        </div>\n                    </li>\n                ";
-
-            var navMarkup = "\n                    <a href=\"#\" data-slide=\"" + index + "\">" + (index + 1) + "</a>\n                ";
+            var slideMarkup = "\n                    <li class=\"slide\">\n                        <img src=\"http://placehold.it/960x540\" />\n                        <div class='info'>\n                            <div class='masthead'>\n                                <div>\n                                    <img src=\"" + item.links.logo + "\" />\n                                    <h3><span>Total Properties: </span>" + item.totalProperties + "</h3>\n                                </div>\n                                <div>\n                                    <h1>" + item.name + "</h1>\n                                    <h2>" + item.location + "</h2>\n                                    <p>" + item.description.substr(0, 520) + "&hellip;</p>\n                                </div>\n                            </div>\n                            <ul class='meta'>\n                                <li><div><span>Residential For Rent Count</span>" + item.residentialForRentCount + "</div></li>\n                                <li><div><span>Residential For Sale Count</span>" + item.residentialForSaleCount + "</div></li>\n                                <li><div><span>Commercial For Rent Count</span>" + item.commercialForRentCount + "</div></li>\n                                <li><div><span>Commercial For Sale Count</span>" + item.commercialForSaleCount + "</div></li>\n                                <li><div><span>Commercial Total Count</span>" + item.commercialTotalCount + "</div></li>\n                            </ul>\n                            <div class='contact'>\n                                " + item.phone + "\n                            </div>\n                        </div>\n                    </li>\n                ";
 
             html += slideMarkup;
-            nav += navMarkup;
         });
 
         document.getElementById('slider-wrapper').innerHTML = html;
-        document.getElementById('slider-nav').innerHTML = nav;
 
         //initialize the slider
-        var aSlider = new Slider("#slider");
+        window.pSlider = new Slider("#slider");
     }, function (xhr) {
         console.error(xhr);
     });
