@@ -403,15 +403,22 @@ template {
 [hidden] {
   display: none; }
 
+html {
+  font-size: 62.5%; }
+  @media only screen and (min-width: 768px) {
+    html {
+      /* tablets and desktop */
+      font-size: 100%; } }
+
 body {
+  font-family: 'Montserrat', sans-serif;
   background: #e1e1e1;
   color: #2D383F; }
 
 #pf-wrapper #pf-container {
   max-width: 960px;
   margin: 0 auto;
-  background: #666666;
-  font-family: 'Montserrat', sans-serif; }
+  background: #666666; }
   #pf-wrapper #pf-container #slider {
     margin: 2em auto;
     width: 100%;
@@ -445,7 +452,8 @@ body {
       padding: 0; }
       #pf-wrapper #pf-container #slider #slider-wrapper li.slide {
         float: left;
-        width: 960px;
+        width: 100vw;
+        max-width: 960px;
         height: 100%;
         position: relative;
         overflow: hidden;
@@ -491,12 +499,18 @@ body {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap; }
+            @media only screen and (min-width: 768px) {
+              #pf-wrapper #pf-container #slider #slider-wrapper li.slide > div.info .meta {
+                flex-wrap: nowrap; } }
             #pf-wrapper #pf-container #slider #slider-wrapper li.slide > div.info .meta > li {
               padding: 1rem;
               text-align: center;
               box-sizing: border-box;
-              flex: 0 1 20%;
-              font-size: 2.5rem; }
+              font-size: 2rem;
+              flex: 1 0 16%; }
+              @media only screen and (min-width: 768px) {
+                #pf-wrapper #pf-container #slider #slider-wrapper li.slide > div.info .meta > li {
+                  flex: 1; } }
               #pf-wrapper #pf-container #slider #slider-wrapper li.slide > div.info .meta > li > div {
                 border: 2px solid black;
                 border-radius: 18px;
@@ -504,7 +518,8 @@ body {
               #pf-wrapper #pf-container #slider #slider-wrapper li.slide > div.info .meta > li span {
                 display: block;
                 font-size: 1rem;
-                padding-bottom: 1rem; }
+                padding-bottom: 1rem;
+                min-height: 2rem; }
           #pf-wrapper #pf-container #slider #slider-wrapper li.slide > div.info .contact {
             color: #b71c1c;
             font-size: 1.7rem;

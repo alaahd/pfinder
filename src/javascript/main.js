@@ -7,7 +7,7 @@ document.addEventListener( "DOMContentLoaded", function() {
             var data = response.data;
             var html = "";
 
-            data.map(function (item, index) {
+            data.map((item, index)=> {
 
                 const slideMarkup = `
                     <li class="slide">
@@ -25,11 +25,12 @@ document.addEventListener( "DOMContentLoaded", function() {
                                 </div>
                             </div>
                             <ul class='meta'>
-                                <li><div><span>Residential For Rent Count</span>${item.residentialForRentCount}</div></li>
-                                <li><div><span>Residential For Sale Count</span>${item.residentialForSaleCount}</div></li>
-                                <li><div><span>Commercial For Rent Count</span>${item.commercialForRentCount}</div></li>
-                                <li><div><span>Commercial For Sale Count</span>${item.commercialForSaleCount}</div></li>
-                                <li><div><span>Commercial Total Count</span>${item.commercialTotalCount}</div></li>
+                                <li><div><span>Residential For Rent</span>${item.residentialForRentCount}</div></li>
+                                <li><div><span>Residential For Sale</span>${item.residentialForSaleCount}</div></li>
+                                <li><div><span>Commercial For Rent</span>${item.commercialForRentCount}</div></li>
+                                <li><div><span>Commercial For Sale</span>${item.commercialForSaleCount}</div></li>
+                                <li><div><span>Commercial Total</span>${item.commercialTotalCount}</div></li>
+                                <li><div><span>Available Agents</span>${item.agentCount}</div></li>
                             </ul>
                             <div class='contact'>
                                 ${item.phone}
